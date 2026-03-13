@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wellbyn Chat System - Documentation Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1d4ed8;
+            --primary-dark: #0f172a;
+            --primary-light: #3b82f6;
+            --secondary: #0ea5e9;
+            --success: #10b981;
+            --light: #f8fbff;
+            --white: #ffffff;
+            --text: #1a202c;
+            --text-light: #4b5563;
+            --border: #e2e8f0;
+            --shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: linear-gradient(135deg, var(--light) 0%, #f1f5f9 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 30px;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: white;
+            border-radius: 16px;
+            margin-bottom: 50px;
+            box-shadow: var(--shadow);
+        }
+
+        header h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 18px;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .documentation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .doc-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .doc-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .doc-card-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .doc-card h2 {
+            font-size: 22px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .doc-card p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .doc-card ul {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .doc-card li {
+            padding: 8px 0;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .doc-card li::before {
+            content: "✓ ";
+            color: var(--success);
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .doc-link {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .doc-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(29, 78, 216, 0.3);
+        }
+
+        .feature-section {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-section h2 {
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 25px;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 15px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-item {
+            padding: 20px;
+            background: var(--light);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .feature-item h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .feature-item p {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .quick-facts {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+        }
+
+        .quick-facts h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .facts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .fact {
+            text-align: center;
+        }
+
+        .fact-number {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .fact-text {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+
+        .getting-started {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .getting-started h2 {
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 25px;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 15px;
+        }
+
+        .steps {
+            display: grid;
+            gap: 20px;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            background: var(--light);
+            border-radius: 8px;
+        }
+
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .step-content p {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .code-snippet {
+            background: var(--primary-dark);
+            color: #d1d5db;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin-top: 8px;
+            overflow-x: auto;
+        }
+
+        .toc {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .toc h2 {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .toc-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .toc-item {
+            padding: 15px;
+            background: var(--light);
+            border-radius: 8px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .toc-item h3 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .toc-item p {
+            color: var(--text-light);
+            font-size: 13px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+        }
+
+        footer p {
+            margin: 8px 0;
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .tech-item {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .tech-item strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .tech-item p {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 28px;
+            }
+
+            header p {
+                font-size: 16px;
+            }
+
+            .documentation-grid,
+            .feature-grid,
+            .facts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>📚 Wellbyn Chat System</h1>
+            <p>Complete Documentation Hub - Everything you need to understand, develop, and deploy the chat system</p>
+        </header>
+
+        <!-- Quick Facts -->
+        <div class="quick-facts">
+            <h2>🎯 Project Quick Facts</h2>
+            <div class="facts-grid">
+                <div class="fact">
+                    <div class="fact-number">2</div>
+                    <div class="fact-text">User Roles (User & Sender)</div>
+                </div>
+                <div class="fact">
+                    <div class="fact-number">5+</div>
+                    <div class="fact-text">REST API Endpoints</div>
+                </div>
+                <div class="fact">
+                    <div class="fact-number">Real-time</div>
+                    <div class="fact-text">WebSocket Support</div>
+                </div>
+                <div class="fact">
+                    <div class="fact-number">JWT</div>
+                    <div class="fact-text">Secure Authentication</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Documentation Grid -->
+        <div class="documentation-grid">
+            <!-- Card 1: Main Documentation -->
+            <div class="doc-card">
+                <div class="doc-card-icon">📖</div>
+                <h2>Full Documentation</h2>
+                <p>Comprehensive guide covering the entire chat system including features, architecture, and all pages.</p>
+                <ul>
+                    <li>System overview & purpose</li>
+                    <li>Complete architecture design</li>
+                    <li>All 3 frontend pages explained</li>
+                    <li>Full REST API documentation</li>
+                    <li>Database schema details</li>
+                    <li>WebSocket events reference</li>
+                    <li>Setup & installation guide</li>
+                    <li>Deployment instructions</li>
+                </ul>
+                <a href="DOCUMENTATION.html" class="doc-link">📖 Read Full Documentation</a>
+            </div>
+
+            <!-- Card 2: Developer Guide -->
+            <div class="doc-card">
+                <div class="doc-card-icon">🛠️</div>
+                <h2>Developer Guide</h2>
+                <p>Technical deep-dive for developers with architecture patterns, code examples, and best practices.</p>
+                <ul>
+                    <li>Project file structure</li>
+                    <li>Backend architecture layers</li>
+                    <li>Frontend component hierarchy</li>
+                    <li>Redux state management</li>
+                    <li>Code patterns & examples</li>
+                    <li>Development best practices</li>
+                    <li>Common mistakes to avoid</li>
+                    <li>Troubleshooting guide</li>
+                </ul>
+                <a href="DEVELOPER_GUIDE.html" class="doc-link">🛠️ Read Developer Guide</a>
+            </div>
+
+            <!-- Card 3: API Reference -->
+            <div class="doc-card">
+                <div class="doc-card-icon">🔌</div>
+                <h2>API Reference</h2>
+                <p>Quick API integration guide with endpoints, examples, and WebSocket event documentation.</p>
+                <ul>
+                    <li>Quick start guide</li>
+                    <li>Authentication flows</li>
+                    <li>Complete endpoint reference</li>
+                    <li>Request/response examples</li>
+                    <li>WebSocket events</li>
+                    <li>Error handling</li>
+                    <li>Code examples</li>
+                    <li>Rate limiting info</li>
+                </ul>
+                <a href="API_REFERENCE.html" class="doc-link">🔌 Read API Reference</a>
+            </div>
+        </div>
+
+        <!-- Tech Stack Section -->
+        <div class="feature-section">
+            <h2>🔧 Technology Stack</h2>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <strong>Frontend</strong>
+                    <p>Next.js 15 • React 19 • Redux Toolkit • Tailwind CSS</p>
+                </div>
+                <div class="tech-item">
+                    <strong>Backend</strong>
+                    <p>Node.js • Express.js • TypeScript</p>
+                </div>
+                <div class="tech-item">
+                    <strong>Database</strong>
+                    <p>MongoDB Atlas • Mongoose ODM</p>
+                </div>
+                <div class="tech-item">
+                    <strong>Real-time</strong>
+                    <p>Socket.io • WebSocket</p>
+                </div>
+                <div class="tech-item">
+                    <strong>Authentication</strong>
+                    <p>JWT • bcryptjs • Role-Based Access</p>
+                </div>
+                <div class="tech-item">
+                    <strong>Tools</strong>
+                    <p>Postman • Redux DevTools • MongoDB Atlas</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Getting Started -->
+        <div class="getting-started">
+            <h2>🚀 Getting Started</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Read the Full Documentation</h3>
+                        <p>Start with the main documentation to understand the system architecture and features.</p>
+                        <div class="code-snippet">Open: DOCUMENTATION.html</div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Setup Development Environment</h3>
+                        <p>Follow the setup guide to install dependencies and run both frontend and backend.</p>
+                        <div class="code-snippet">Backend: npm run dev (from chat-system/)
+Frontend: npm run dev (from wellbyn-chat-ap/)</div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Review Developer Guide</h3>
+                        <p>Read the developer guide for architecture patterns and code organization.</p>
+                        <div class="code-snippet">Open: DEVELOPER_GUIDE.html</div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Test APIs with Reference Guide</h3>
+                        <p>Use the API reference guide to test endpoints and understand integration points.</p>
+                        <div class="code-snippet">Open: API_REFERENCE.html</div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Start Development</h3>
+                        <p>Begin modifying code, adding features, or deploying to production.</p>
+                        <div class="code-snippet">Reference guides as needed during development</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h2>📑 Documentation Contents</h2>
+            <div class="toc-list">
+                <div class="toc-item">
+                    <h3>📖 DOCUMENTATION.html</h3>
+                    <p>Complete project documentation with sections on overview, architecture, frontend pages, backend API, database schema, socket events, setup, features, and deployment.</p>
+                </div>
+                <div class="toc-item">
+                    <h3>🛠️ DEVELOPER_GUIDE.html</h3>
+                    <p>Technical guide for developers covering project structure, backend/frontend architecture, code patterns, best practices, and troubleshooting.</p>
+                </div>
+                <div class="toc-item">
+                    <h3>🔌 API_REFERENCE.html</h3>
+                    <p>API integration guide with quick start instructions, authentication, complete endpoint reference, WebSocket events, and code examples.</p>
+                </div>
+                <div class="toc-item">
+                    <h3>📚 This File (INDEX.html)</h3>
+                    <p>Navigation hub for all documentation files with overview of each document and getting started guide.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="feature-section">
+            <h2>✨ Key Features</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h3>🔐 JWT Authentication</h3>
+                    <p>Secure JWT-based authentication with role-based access control and token refresh mechanism.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>💬 Real-time Messaging</h3>
+                    <p>Instant message delivery with WebSocket support and real-time read receipts.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>👥 Conversation Management</h3>
+                    <p>1-to-1 conversations with search, filtering, and message history.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>📱 Responsive Design</h3>
+                    <p>Mobile-friendly interface with Tailwind CSS and modern React patterns.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🗄️ MongoDB Integration</h3>
+                    <p>Scalable MongoDB database with optimized queries and proper indexing.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🚀 Production Ready</h3>
+                    <p>Error handling, validation, logging, and deployment-ready architecture.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Important Notes -->
+        <div class="feature-section" style="background: #eff6ff; border-left: 4px solid var(--primary);">
+            <h2 style="color: var(--primary);">📌 Important Notes</h2>
+            <div style="display: grid; gap: 15px; color: var(--text-light);">
+                <p><strong>📁 File Locations:</strong> All HTML documentation files are in the root project directory: <code style="background: white; padding: 2px 8px; border-radius: 4px; font-family: monospace;">c:\Users\Fahim\Desktop\chat-system\</code></p>
+                
+                <p><strong>🌐 Viewing Documentation:</strong> Open any HTML file in your web browser to view beautifully formatted documentation with embedded CSS styling.</p>
+                
+                <p><strong>📚 User vs Sender:</strong> The system now uses "User" and "Sender" terminology throughout (previously "Patient" and "Doctor"). All documentation reflects this naming convention.</p>
+                
+                <p><strong>🚀 Getting to Localhost:</strong> When setting up, backend runs on <code style="background: white; padding: 2px 8px; border-radius: 4px; font-family: monospace;">http://localhost:5000</code>, frontend on <code style="background: white; padding: 2px 8px; border-radius: 4px; font-family: monospace;">http://localhost:3000</code></p>
+                
+                <p><strong>💾 MongoDB Atlas:</strong> Ensure your MongoDB Atlas connection string is configured in .env before running backend.</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p><strong>Wellbyn Chat System - Complete Documentation</strong></p>
+            <p>Version 1.0 | Last Updated: March 14, 2024</p>
+            <p>Built with modern technologies: Next.js • Node.js • MongoDB • Socket.io</p>
+            <p style="margin-top: 20px; color: var(--primary); font-weight: 500;">
+                Start with DOCUMENTATION.html and follow the getting started guide above →
+            </p>
+        </footer>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wellbyn Chat System - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1d4ed8;
+            --primary-dark: #0f172a;
+            --secondary-color: #0ea5e9;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --light-bg: #f8fbff;
+            --white-bg: #ffffff;
+            --text-dark: #1a202c;
+            --text-light: #4b5563;
+            --border-color: #e2e8f0;
+            --shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+            --shadow-lg: 0 20px 50px rgba(15, 23, 42, 0.15);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, var(--light-bg) 0%, #f1f5f9 100%);
+        }
+
+        /* Navigation Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--primary-dark);
+            color: white;
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .sidebar h1 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar h1::before {
+            content: "💬";
+            font-size: 28px;
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+        }
+
+        .sidebar nav li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar nav a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            display: block;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .sidebar nav a:hover,
+        .sidebar nav a.active {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        /* Main Content */
+        .container {
+            margin-left: 280px;
+            padding: 40px;
+            max-width: 1400px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        header h2 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 16px;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+
+        /* Sections */
+        section {
+            background: var(--white-bg);
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        section h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 15px;
+        }
+
+        section h4 {
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, var(--light-bg) 0%, white 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .card h5 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tr:hover {
+            background: var(--light-bg);
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: var(--primary-dark);
+            color: #d1d5db;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .code-block code {
+            color: #60a5fa;
+        }
+
+        .keyword {
+            color: #f87171;
+        }
+
+        .string {
+            color: #34d399;
+        }
+
+        .variable {
+            color: #fbbf24;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .badge-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .badge-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .badge-warning {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .badge-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        /* Feature List */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            color: var(--text-light);
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success-color);
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* Endpoint */
+        .endpoint {
+            background: var(--light-bg);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .endpoint-method {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+
+        .method-get {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .method-post {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .method-put {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .method-delete {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .endpoint-path {
+            font-family: 'Courier New', monospace;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* File Structure */
+        .file-tree {
+            background: var(--light-bg);
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            margin: 20px 0;
+        }
+
+        .file-tree pre {
+            margin: 0;
+            color: var(--text-dark);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 220px;
+            }
+
+            .container {
+                margin-left: 220px;
+                padding: 20px;
+            }
+
+            section {
+                padding: 25px;
+            }
+
+            header {
+                padding: 25px;
+            }
+
+            header h2 {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                margin-bottom: 20px;
+            }
+
+            .container {
+                margin-left: 0;
+                padding: 15px;
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th,
+            td {
+                padding: 8px 10px;
+            }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 40px;
+            color: var(--text-light);
+            margin-top: 40px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        /* Status Indicators */
+        .status-online {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success-color);
+            margin-right: 5px;
+        }
+
+        .status-offline {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--danger-color);
+            margin-right: 5px;
+        }
+
+        /* Highlights */
+        .highlight {
+            background: #fffbea;
+            border-left: 4px solid var(--warning-color);
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+
+        .highlight strong {
+            color: var(--warning-color);
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+
+        .info-box strong {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <h1>CHAT DOCS</h1>
+        <nav>
+            <ul>
+                <li><a href="#overview" class="active">Overview</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#system-flow">System Flow</a></li>
+                <li><a href="#frontend">Frontend Pages</a></li>
+                <li><a href="#backend-api">Backend API</a></li>
+                <li><a href="#database">Database Schema</a></li>
+                <li><a href="#socket-events">Socket Events</a></li>
+                <li><a href="#setup">Setup & Installation</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#deployment">Deployment</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h2>Wellbyn Chat System</h2>
+            <p>A real-time messaging platform with WebSocket support, JWT authentication, and role-based access control. Built with Next.js frontend and Node.js/Express backend.</p>
+        </header>
+
+        <!-- Overview Section -->
+        <section id="overview">
+            <h3>📋 Project Overview</h3>
+            <p>The Wellbyn Chat System is a modern, full-stack messaging application designed to facilitate real-time communication between two types of users: <strong>Users</strong> and <strong>Senders</strong>. The system provides a seamless experience for initiating conversations, sending messages, and maintaining real-time connectivity.</p>
+
+            <div class="cards-grid" style="margin-top: 25px;">
+                <div class="card">
+                    <h5>🎯 Purpose</h5>
+                    <p>Enable real-time communication between Users and Senders with persistent message history and live status updates.</p>
+                </div>
+                <div class="card">
+                    <h5>📱 Tech Stack</h5>
+                    <p><strong>Frontend:</strong> Next.js 15, React 19, Tailwind CSS, Redux Toolkit<br><strong>Backend:</strong> Node.js, Express.js, TypeScript, MongoDB<br><strong>Real-time:</strong> Socket.io, JWT</p>
+                </div>
+                <div class="card">
+                    <h5>🔐 Authentication</h5>
+                    <p>JWT-based authentication with role-based access control (RBAC). Secure password hashing with bcrypt. Refresh token mechanism for session management.</p>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>ℹ️ Key Information:</strong> This is a two-role system - Users and Senders. Each user type has specific features and permissions tailored to their use case.
+            </div>
+        </section>
+
+        <!-- Architecture Section -->
+        <section id="architecture">
+            <h3>🏗️ System Architecture</h3>
+            <p>The system follows a modern layered architecture pattern with clear separation of concerns:</p>
+
+            <div class="cards-grid" style="margin-top: 25px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                <div class="card">
+                    <h5>🖥️ Frontend Layer</h5>
+                    <ul class="feature-list">
+                        <li>Next.js App Router</li>
+                        <li>Redux State Management</li>
+                        <li>Real-time Socket.io Integration</li>
+                        <li>Responsive UI with Tailwind</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h5>🔌 API Layer</h5>
+                    <ul class="feature-list">
+                        <li>REST API Endpoints</li>
+                        <li>WebSocket Events</li>
+                        <li>JWT Authentication</li>
+                        <li>Request Validation</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h5>⚙️ Business Logic</h5>
+                    <ul class="feature-list">
+                        <li>Service Layer</li>
+                        <li>Repository Pattern</li>
+                        <li>Error Handling</li>
+                        <li>Data Transformers</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h5>🗄️ Data Layer</h5>
+                    <ul class="feature-list">
+                        <li>MongoDB Atlas</li>
+                        <li>Mongoose ODM</li>
+                        <li>Schema Validation</li>
+                        <li>Database Indexes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4>Architecture Diagram</h4>
+            <div class="code-block" style="padding: 30px; text-align: center; background: white; border: 1px solid var(--border-color); color: var(--text-dark);">
+                <pre>┌─────────────────────────────────────────────────────────────┐
+│                     FRONTEND (Next.js)                       │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │  Login Page  │  │ Register Page│  │ Inbox/Chat  │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+│         │                │                    │              │
+│         └────────────────┴────────────────────┘              │
+│              Redux Store + Socket.io Client                  │
+└────────────────────────────┬─────────────────────────────────┘
+                             │
+                    ┌────────▼────────┐
+                    │  REST API + WS  │  
+                    │   Express.js    │
+                    └────────┬────────┘
+         ┌──────────────────┼──────────────────┐
+         │                  │                  │
+    ┌────▼────┐      ┌──────▼──────┐   ┌──────▼──────┐
+    │ Auth    │      │   Chat      │   │  Validation │
+    │Endpoints│      │ Endpoints   │   │  Middleware │
+    └─────────┘      └─────────────┘   └─────────────┘
+         │                  │                  │
+    ┌────▼─────────────────▼──────────────────▼──────┐
+    │         Business Logic Layer (Services)        │
+    │  ┌──────────────┐  ┌──────────────────────┐   │
+    │  │   Auth Svc   │  │   Chat Service       │   │
+    │  └──────────────┘  └──────────────────────┘   │
+    └────┬─────────────────────────────────────────┬─┘
+         │                                          │
+    ┌────▼──────────────────────────────────────────▼──┐
+    │    Repository Layer (Data Access)               │
+    │  ┌──────────────┐  ┌──────────────┐            │
+    │  │ User Repo    │  │  Chat Repo   │            │
+    │  └──────────────┘  └──────────────┘            │
+    └────┬──────────────────────────────────────────┬──┘
+         │                                          │
+    ┌────▼──────────────────────────────────────────▼──┐
+    │         MongoDB Database                       │
+    │  ┌──────────────┐  ┌──────────────┐            │
+    │  │ Users Coll   │  │ Conversations│            │
+    │  │ Senders Coll │  │ Messages Coll│            │
+    │  └──────────────┘  └──────────────┘            │
+    └─────────────────────────────────────────────────┘</pre>
+            </div>
+        </section>
+
+        <!-- System Flow -->
+        <section id="system-flow">
+            <h3>🔄 System Flow</h3>
+
+            <h4>1. Authentication Flow</h4>
+            <div class="code-block">User → Register/Login → Backend Validation → JWT Generated → Stored in Redux → Redirect to Inbox</div>
+
+            <h4>2. Conversation Flow</h4>
+            <div class="code-block">User Selects Contact → API Call → Get/Create Conversation → Load Messages → Render Chat Window</div>
+
+            <h4>3. Real-time Messaging Flow</h4>
+            <div class="code-block">User Sends Message → HTTP POST → Message Saved → Socket Emit → Other User Receives → UI Updates</div>
+
+            <h4>4. Online Status Flow</h4>
+            <div class="code-block">Socket Connected → User Status Updated → Broadcast to Other User → Realtime Status Indicator</div>
+        </section>
+
+        <!-- Frontend Section -->
+        <section id="frontend">
+            <h3>🎨 Frontend Pages & Components</h3>
+
+            <h4>📄 Page: Login (`/login`)</h4>
+            <div class="endpoint">
+                <strong>Purpose:</strong> User authentication<br>
+                <strong>Features:</strong> Email/password login, role selection (User/Sender), error handling, redirect to inbox on success
+            </div>
+
+            <div class="highlight">
+                <strong>⚠️ Role Selection:</strong> Users can select their role (User or Sender) before logging in. This determines their features in the chat interface.
+            </div>
+
+            <h4>Key Features:</h4>
+            <ul class="feature-list">
+                <li>Form validation with error display</li>
+                <li>Role dropdown (User/Sender)</li>
+                <li>Loading state during authentication</li>
+                <li>Error message display</li>
+                <li>Link to registration page</li>
+                <li>JWT token stored in Redux</li>
+            </ul>
+
+            <h4>📄 Page: Register (`/register`)</h4>
+            <div class="endpoint">
+                <strong>Purpose:</strong> User account creation<br>
+                <strong>Features:</strong> Email registration, password setup, role selection, automatic login after registration
+            </div>
+
+            <h4>Key Features:</h4>
+            <ul class="feature-list">
+                <li>Email uniqueness validation</li>
+                <li>Password strength requirements</li>
+                <li>Full name input (for Users)</li>
+                <li>Role selection</li>
+                <li>Auto-login after registration</li>
+                <li>Link to login page</li>
+            </ul>
+
+            <h4>📄 Page: Inbox/Chat (`/inbox`)</h4>
+            <div class="endpoint">
+                <strong>Purpose:</strong> Main chat interface<br>
+                <strong>Features:</strong> Real-time messaging, conversation list, contact management, message filtering
+            </div>
+
+            <h4>Main Components:</h4>
+            <ul class="feature-list">
+                <li><strong>Header:</strong> User info, logout button, real-time status indicator</li>
+                <li><strong>Sidebar:</strong> Conversation list, search, recent conversations, registered users list</li>
+                <li><strong>Chat Window:</strong> Messages, input field, message filtering (User/Sender)</li>
+                <li><strong>Message Display:</strong> Sender role badge, timestamp, read receipts</li>
+            </ul>
+
+            <h4>🛠️ Key React Hooks & State</h4>
+            <div class="code-block">
+const [message, setMessage] = useState('');
+const [selectedConversation, setSelectedConversation] = useState(null);
+const [filterRole, setFilterRole] = useState('all');
+
+const { data: conversations } = useListConversationsQuery();
+const { data: messages } = useListMessagesQuery(conversationId);
+const [sendMessage] = useSendMessageMutation();
+const { socket } = useSocket();</div>
+
+            <h4>🔌 Integration Points</h4>
+            <ul class="feature-list">
+                <li>Redux store for auth and chat data</li>
+                <li>Socket.io for real-time updates</li>
+                <li>REST API for message history</li>
+                <li>Local storage for browser state</li>
+            </ul>
+
+            <h4>Component Tree</h4>
+            <div class="file-tree">
+<pre>ChatApp (Main)
+├── Header
+│   ├── Logo
+│   ├── Title
+│   └── User Profile + Logout
+├── InboxSidebar
+│   ├── Search Bar
+│   ├── Tab Navigation (Chat/SMS/Email)
+│   ├── Recent Conversations List
+│   │   └── ConversationItem (map)
+│   └── Registered Users Section
+│       └── ContactItem (map)
+└── ChatWindow
+    ├── Chat Header
+    │   ├── Contact Name
+    │   ├── Online Status
+    │   └── Message Filter
+    ├── Messages Container
+    │   └── MessageBubble (map)
+    │       ├── Avatar
+    │       ├── Sender Role Badge
+    │       ├── Message Content
+    │       └── Timestamp
+    └── Input Area
+        ├── Text Input
+        └── Send Button</pre>
+            </div>
+        </section>
+
+        <!-- Backend API Section -->
+        <section id="backend-api">
+            <h3>🔌 Backend REST API</h3>
+
+            <div class="info-box">
+                <strong>ℹ️ Base URL:</strong> All endpoints require authentication header: <code>Authorization: Bearer &lt;accessToken&gt;</code>
+            </div>
+
+            <h4>Authentication Endpoints</h4>
+
+            <div class="endpoint">
+                <span class="endpoint-method method-post">POST</span>
+                <span class="endpoint-path">/api/auth/register</span>
+            </div>
+            <p><strong>Description:</strong> Create a new user account</p>
+            <p><strong>Request Body:</strong></p>
+            <div class="code-block">
+{
+  "email": "user@example.com",
+  "password": "securePassword123",
+  "fullName": "John Doe",
+  "role": "user"  // or "sender"
+}</div>
+            <p><strong>Response (201):</strong></p>
+            <div class="code-block">
+{
+  "user": {
+    "_id": "507f1f77bcf86cd799439011",
+    "email": "user@example.com",
+    "fullName": "John Doe",
+    "role": "user"
+  },
+  "accessToken": "eyJhbGc...",
+  "refreshToken": "eyJhbGc..."
+}</div>
+
+            <div class="endpoint">
+                <span class="endpoint-method method-post">POST</span>
+                <span class="endpoint-path">/api/auth/login</span>
+            </div>
+            <p><strong>Description:</strong> Authenticate user and receive tokens</p>
+            <p><strong>Request Body:</strong></p>
+            <div class="code-block">
+{
+  "email": "user@example.com",
+  "password": "securePassword123",
+  "role": "user"  // or "sender"
+}</div>
+            <p><strong>Response (200):</strong> Same as register response</p>
+
+            <h4>Chat Endpoints</h4>
+
+            <div class="endpoint">
+                <span class="endpoint-method method-post">POST</span>
+                <span class="endpoint-path">/api/chat/conversations</span>
+            </div>
+            <p><strong>Description:</strong> Get or create a conversation</p>
+            <p><strong>Request Body:</strong></p>
+            <div class="code-block">
+{
+  "recipientId": "507f1f77bcf86cd799439011",
+  "recipientModel": "User"  // or "Sender"
+}</div>
+            <p><strong>Response (201):</strong></p>
+            <div class="code-block">
+{
+  "conversationId": "507f1f77bcf86cd799439012"
+}</div>
+
+            <div class="endpoint">
+                <span class="endpoint-method method-get">GET</span>
+                <span class="endpoint-path">/api/chat/conversations</span>
+            </div>
+            <p><strong>Description:</strong> List all conversations for authenticated user</p>
+            <p><strong>Query Parameters:</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>page</td>
+                        <td>number</td>
+                        <td>Page number (default: 1)</td>
+                    </tr>
+                    <tr>
+                        <td>limit</td>
+                        <td>number</td>
+                        <td>Items per page (default: 10)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>Response (200):</strong></p>
+            <div class="code-block">
+{
+  "total": 5,
+  "page": 1,
+  "limit": 10,
+  "data": [
+    {
+      "conversationId": "507f...",
+      "user": { "_id": "...", "name": "John", "email": "..." },
+      "sender": null,
+      "lastMessageText": "Hello!",
+      "unreadCount": 2
+    }
+  ]
+}</div>
+
+            <div class="endpoint">
+                <span class="endpoint-method method-get">GET</span>
+                <span class="endpoint-path">/api/chat/conversations/:conversationId/messages</span>
+            </div>
+            <p><strong>Description:</strong> Retrieve messages from a conversation</p>
+            <p><strong>Query Parameters:</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>limit</td>
+                        <td>number</td>
+                        <td>Messages per request (default: 20)</td>
+                    </tr>
+                    <tr>
+                        <td>before</td>
+                        <td>ISO date</td>
+                        <td>Load messages before this date</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>Response (200):</strong></p>
+            <div class="code-block">
+{
+  "data": [
+    {
+      "_id": "507f...",
+      "conversationId": "507f...",
+      "senderId": "507f...",
+      "senderRole": "user",
+      "content": "Hello there!",
+      "createdAt": "2024-03-14T10:30:00Z",
+      "readByUser": true,
+      "readBySender": false
+    }
+  ]
+}</div>
+
+            <div class="endpoint">
+                <span class="endpoint-method method-post">POST</span>
+                <span class="endpoint-path">/api/chat/conversations/:conversationId/messages</span>
+            </div>
+            <p><strong>Description:</strong> Send a message in a conversation</p>
+            <p><strong>Request Body:</strong></p>
+            <div class="code-block">
+{
+  "content": "This is my message!"
+}</div>
+            <p><strong>Response (201):</strong></p>
+            <div class="code-block">
+{
+  "_id": "507f...",
+  "conversationId": "507f...",
+  "senderId": "507f...",
+  "senderRole": "user",
+  "content": "This is my message!",
+  "createdAt": "2024-03-14T10:35:00Z",
+  "readByUser": true,
+  "readBySender": false
+}</div>
+
+            <div class="endpoint">
+                <span class="endpoint-method method-post">POST</span>
+                <span class="endpoint-path">/api/chat/conversations/:conversationId/read</span>
+            </div>
+            <p><strong>Description:</strong> Mark all messages in conversation as read</p>
+            <p><strong>Response (200):</strong></p>
+            <div class="code-block">
+{
+  "success": true,
+  "message": "Conversation marked as read"
+}</div>
+
+            <div class="endpoint">
+                <span class="endpoint-method method-get">GET</span>
+                <span class="endpoint-path">/api/chat/contacts</span>
+            </div>
+            <p><strong>Description:</strong> List all registered users/senders for starting conversations</p>
+            <p><strong>Query Parameters:</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>search</td>
+                        <td>string</td>
+                        <td>Search by name or email</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Error Responses</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Error Code</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>400</td>
+                        <td>VALIDATION_ERROR</td>
+                        <td>Request validation failed</td>
+                    </tr>
+                    <tr>
+                        <td>401</td>
+                        <td>UNAUTHORIZED</td>
+                        <td>Missing or invalid token</td>
+                    </tr>
+                    <tr>
+                        <td>403</td>
+                        <td>FORBIDDEN</td>
+                        <td>Insufficient permissions</td>
+                    </tr>
+                    <tr>
+                        <td>404</td>
+                        <td>NOT_FOUND</td>
+                        <td>Resource not found</td>
+                    </tr>
+                    <tr>
+                        <td>409</td>
+                        <td>CONFLICT</td>
+                        <td>Resource already exists</td>
+                    </tr>
+                    <tr>
+                        <td>500</td>
+                        <td>SERVER_ERROR</td>
+                        <td>Internal server error</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Database Schema Section -->
+        <section id="database">
+            <h3>🗄️ Database Schema</h3>
+
+            <h4>User Model (Senders)</h4>
+            <div class="code-block">
+{
+  "_id": ObjectId,
+  "email": String (unique),
+  "password": String (hashed),
+  "fullName": String,
+  "role": "sender" | "user" | "admin",
+  "profilePicture": String (URL),
+  "authProvider": "local" | "google" | "facebook",
+  "isActive": Boolean,
+  "createdAt": Date,
+  "updatedAt": Date
+}</div>
+
+            <h4>Doctor Model (Users)</h4>
+            <div class="code-block">
+{
+  "_id": ObjectId,
+  "email": String (unique),
+  "password": String (hashed),
+  "fullName": String,
+  "role": "user",
+  "specialization": String,
+  "licenseNumber": String,
+  "profilePicture": String (URL),
+  "isActive": Boolean,
+  "createdAt": Date,
+  "updatedAt": Date
+}</div>
+
+            <h4>Chat Conversation Model</h4>
+            <div class="code-block">
+{
+  "_id": ObjectId,
+  "userId": ObjectId (ref: "Doctor"),
+  "senderId": ObjectId (ref: "User"),
+  "initiatedBy": "user" | "sender",
+  "lastMessage": String,
+  "lastMessageTime": Date,
+  "status": "active" | "archived" | "deleted",
+  "createdAt": Date,
+  "updatedAt": Date,
+  
+  // Index: { "userId": 1, "senderId": 1 } (unique)
+}</div>
+
+            <h4>Chat Message Model</h4>
+            <div class="code-block">
+{
+  "_id": ObjectId,
+  "conversationId": ObjectId (ref: "ChatConversation"),
+  "senderId": ObjectId,
+  "senderRole": "user" | "sender",
+  "content": String,
+  "attachments": [
+    {
+      "type": String,
+      "url": String,
+      "fileName": String
+    }
+  ],
+  "readByUser": Boolean,
+  "readBySender": Boolean,
+  "readAt": Date,
+  "deletedAt": Date,
+  "createdAt": Date,
+  "updatedAt": Date
+}</div>
+
+            <h4>Database Indexes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Collection</th>
+                        <th>Index</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>users</td>
+                        <td>{ email: 1 }</td>
+                        <td>Fast email lookups</td>
+                    </tr>
+                    <tr>
+                        <td>conversations</td>
+                        <td>{ userId: 1, senderId: 1 }</td>
+                        <td>Unique conversations</td>
+                    </tr>
+                    <tr>
+                        <td>messages</td>
+                        <td>{ conversationId: 1 }</td>
+                        <td>Message retrieval</td>
+                    </tr>
+                    <tr>
+                        <td>messages</td>
+                        <td>{ createdAt: -1 }</td>
+                        <td>Chronological sorting</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Socket Events Section -->
+        <section id="socket-events">
+            <h3>⚡ WebSocket (Socket.io) Events</h3>
+
+            <div class="info-box">
+                <strong>ℹ️ Connection:</strong> Socket.io connects using JWT authentication via token header or Authorization bearer token
+            </div>
+
+            <h4>Client-to-Server Events</h4>
+
+            <div class="endpoint">
+                <strong>Event:</strong> <code>chat:message</code>
+            </div>
+            <p><strong>Emitted by:</strong> Client (when message is sent)</p>
+            <p><strong>Payload:</strong></p>
+            <div class="code-block">
+{
+  "conversationId": "507f...",
+  "senderId": "507f...",
+  "senderRole": "user",
+  "content": "Hello!",
+  "timestamp": "2024-03-14T10:35:00Z"
+}</div>
+
+            <div class="endpoint">
+                <strong>Event:</strong> <code>chat:typing</code>
+            </div>
+            <p><strong>Emitted by:</strong> Client (when user starts typing)</p>
+            <p><strong>Payload:</strong></p>
+            <div class="code-block">
+{
+  "conversationId": "507f...",
+  "userName": "John Doe"
+}</div>
+
+            <h4>Server-to-Client Events</h4>
+
+            <div class="endpoint">
+                <strong>Event:</strong> <code>chat:message</code>
+            </div>
+            <p><strong>Broadcast to:</strong> Other participant in conversation</p>
+            <p><strong>Payload:</strong> Same as above</p>
+
+            <div class="endpoint">
+                <strong>Event:</strong> <code>chat:read</code>
+            </div>
+            <p><strong>Broadcast to:</strong> Message sender</p>
+            <p><strong>Payload:</strong></p>
+            <div class="code-block">
+{
+  "conversationId": "507f...",
+  "messageId": "507f...",
+  "readAt": "2024-03-14T10:36:00Z"
+}</div>
+
+            <div class="endpoint">
+                <strong>Event:</strong> <code>user:online</code>
+            </div>
+            <p><strong>Broadcast to:</strong> All connected users</p>
+            <p><strong>Payload:</strong></p>
+            <div class="code-block">
+{
+  "userId": "507f...",
+  "status": "online"
+}</div>
+
+            <div class="endpoint">
+                <strong>Event:</strong> <code>user:offline</code>
+            </div>
+            <p><strong>Broadcast to:</strong> All connected users</p>
+            <p><strong>Payload:</strong></p>
+            <div class="code-block">
+{
+  "userId": "507f...",
+  "status": "offline"
+}</div>
+        </section>
+
+        <!-- Setup Section -->
+        <section id="setup">
+            <h3>⚙️ Setup & Installation</h3>
+
+            <h4>Prerequisites</h4>
+            <ul class="feature-list">
+                <li>Node.js 18+ and npm/yarn</li>
+                <li>MongoDB Atlas account or local MongoDB</li>
+                <li>Git for version control</li>
+                <li>Environment variables configured</li>
+            </ul>
+
+            <h4>Backend Setup</h4>
+            <div class="code-block">
+# 1. Navigate to backend directory
+cd chat-system
+
+# 2. Install dependencies
+npm install
+
+# 3. Create .env file
+cp .env.example .env
+
+# 4. Configure environment variables
+# MONGODB_URI=mongodb+srv://...
+# JWT_SECRET=your-secret-key
+# PORT=5000
+
+# 5. Start development server
+npm run dev
+
+# Server runs at http://localhost:5000</div>
+
+            <h4>Frontend Setup</h4>
+            <div class="code-block">
+# 1. Navigate to frontend directory
+cd wellbyn-chat-ap
+
+# 2. Install dependencies
+npm install
+
+# 3. Create .env.local file
+# NEXT_PUBLIC_API_URL=http://localhost:5000
+# NEXT_PUBLIC_SOCKET_URL=http://localhost:5000
+
+# 4. Start development server
+npm run dev
+
+# Frontend runs at http://localhost:3000</div>
+
+            <div class="highlight">
+                <strong>⚠️ Important:</strong> Make sure both backend and frontend are running for full functionality. Backend on port 5000, Frontend on port 3000.
+            </div>
+
+            <h4>Environment Variables</h4>
+
+            <h5>Backend (.env)</h5>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Variable</th>
+                        <th>Description</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>MONGODB_URI</td>
+                        <td>MongoDB connection string</td>
+                        <td>mongodb+srv://user:pass@cluster.mongodb.net/dbname</td>
+                    </tr>
+                    <tr>
+                        <td>PORT</td>
+                        <td>Backend server port</td>
+                        <td>5000</td>
+                    </tr>
+                    <tr>
+                        <td>ACCESS_TOKEN_SECRET</td>
+                        <td>JWT access token secret</td>
+                        <td>your-random-secret-key</td>
+                    </tr>
+                    <tr>
+                        <td>REFRESH_TOKEN_SECRET</td>
+                        <td>JWT refresh token secret</td>
+                        <td>your-random-refresh-secret</td>
+                    </tr>
+                    <tr>
+                        <td>NODE_ENV</td>
+                        <td>Environment mode</td>
+                        <td>development | production</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h5>Frontend (.env.local)</h5>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Variable</th>
+                        <th>Description</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>NEXT_PUBLIC_API_URL</td>
+                        <td>Backend API base URL</td>
+                        <td>http://localhost:5000</td>
+                    </tr>
+                    <tr>
+                        <td>NEXT_PUBLIC_SOCKET_URL</td>
+                        <td>Socket.io server URL</td>
+                        <td>http://localhost:5000</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Testing the Setup</h4>
+            <div class="code-block">
+# 1. Test backend
+curl http://localhost:5000/health
+
+# 2. Open frontend
+http://localhost:3000
+
+# 3. Register two accounts (one as User, one as Sender)
+
+# 4. Start a conversation between them
+
+# 5. Verify real-time messaging works</div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features">
+            <h3>✨ Core Features</h3>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <h5>🔐 Authentication</h5>
+                    <ul class="feature-list">
+                        <li>JWT-based auth</li>
+                        <li>Secure password hashing</li>
+                        <li>Role-based access</li>
+                        <li>Token refresh mechanism</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h5>💬 Messaging</h5>
+                    <ul class="feature-list">
+                        <li>Real-time messages</li>
+                        <li>Message history</li>
+                        <li>Read receipts</li>
+                        <li>Typing indicators</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h5>👥 Conversations</h5>
+                    <ul class="feature-list">
+                        <li>1-to-1 messaging</li>
+                        <li>Conversation list</li>
+                        <li>Search & filter</li>
+                        <li>Archive conversations</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h5>📱 Real-time Updates</h5>
+                    <ul class="feature-list">
+                        <li>Socket.io integration</li>
+                        <li>Instant message delivery</li>
+                        <li>Online/offline status</li>
+                        <li>Live notifications</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h5>🎨 User Interface</h5>
+                    <ul class="feature-list">
+                        <li>Modern responsive design</li>
+                        <li>Tailwind CSS styling</li>
+                        <li>Mobile-friendly layout</li>
+                        <li>Dark mode ready</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h5>🔒 Security</h5>
+                    <ul class="feature-list">
+                        <li>CORS enabled</li>
+                        <li>Request validation</li>
+                        <li>Error handling</li>
+                        <li>Data sanitization</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4>Feature Comparison: User vs Sender</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>User</th>
+                        <th>Sender</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Send Messages</td>
+                        <td>✓</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td>Receive Messages</td>
+                        <td>✓</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td>View Conversation History</td>
+                        <td>✓</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td>Search Contacts</td>
+                        <td>✓</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td>Mark Messages as Read</td>
+                        <td>✓</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td>See Online Status</td>
+                        <td>✓</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td>Filter Messages</td>
+                        <td>✓</td>
+                        <td>✓</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Deployment Section -->
+        <section id="deployment">
+            <h3>🚀 Deployment Guide</h3>
+
+            <h4>Backend Deployment (Heroku / Railway)</h4>
+            <div class="code-block">
+# 1. Build TypeScript
+npm run build
+
+# 2. Ensure package.json has start script
+"start": "node dist/server.js"
+
+# 3. Deploy to Heroku
+heroku login
+heroku create your-app-name
+git push heroku main
+
+# 4. Set environment variables
+heroku config:set MONGODB_URI=...
+heroku config:set ACCESS_TOKEN_SECRET=...</div>
+
+            <h4>Frontend Deployment (Vercel / Netlify)</h4>
+            <div class="code-block">
+# 1. Build Next.js
+npm run build
+
+# 2. Deploy to Vercel (recommended for Next.js)
+npm install -g vercel
+vercel
+
+# 3. Configure environment variables in Vercel dashboard
+# Add NEXT_PUBLIC_API_URL pointing to deployed backend</div>
+
+            <h4>Database Deployment</h4>
+            <ul class="feature-list">
+                <li>Use MongoDB Atlas for managed MongoDB</li>
+                <li>Create a free tier cluster</li>
+                <li>Enable IP whitelist for security</li>
+                <li>Backup regularly using Atlas backup</li>
+                <li>Monitor performance and scaling</li>
+            </ul>
+
+            <h4>Production Checklist</h4>
+            <div class="code-block">
+□ Set NODE_ENV=production
+□ Use environment variables for all secrets
+□ Enable HTTPS/SSL certificates
+□ Configure CORS with specific domains
+□ Set up rate limiting
+□ Enable database backups
+□ Configure error logging (Sentry)
+□ Set up monitoring (DataDog, New Relic)
+□ Test all endpoints thoroughly
+□ Load test with multiple users
+□ Set up CI/CD pipeline
+□ Document deployment process</div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p><strong>Wellbyn Chat System</strong> - v1.0.0</p>
+            <p>Built with ❤️ using Next.js, Node.js, and MongoDB</p>
+            <p>Last Updated: March 14, 2024</p>
+        </footer>
+    </div>
+</body>
+
+</html>

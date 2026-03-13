@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@plugin 'tailwind-scrollbar';
+
+@theme {
+  --color-page: #f5f7f9;
+  --color-tertiary: #dcdcdc;
+  --color-Border-tertiary: #dcdcdc;
+  --color-brand-500: #757575;
+  --color-brand-600: #444444;
+  --color-primary-500: #2e8bc9;
+  --color-primary-700: #1a588a;
+  --color-text-primary: #3d3d3d;
+  --color-text-secondary: #7c7c7c;
+  --color-Text-secondary: #7c7c7c;
+  --color-primary-50: #f2f8fd;
+  --color-primary-100: #e4effa;
+  --color-action-hover: #1a588a;
+  --color-action-light: #f2f8fd;
+  --color-Text-error: #b42121;
+  --color-Text-primary: #3d3d3d;
+  --color-Surface-warning: #fbf7eb;
+  --color-Text-action: #2e8bc9;
+  --color-Icon-action: #2e8bc9;
+  --color-Surface-success: #eefee7;
+  --color-Surface-primary: #ffffff;
+  --color-Surface-secondary: #f3f3f3;
+  --color-Surface-action: #2e8bc9;
+  --color-Surface-Dashboard-dashboard-page: #f6f9fc;
+  --color-Border-focus: #90c4e9;
+  --color-Border-warning: #93531f;
+}
+
+@layer components {
+  .card {
+    border-radius: "1.5rem";
+    border-width: "1px";
+    border-color: "#YourTertiaryColor";
+    padding: "1.5rem";
+    gap: "1.5rem";
+    display: "flex";
+    flex-direction: "column";
+    box-shadow: "0px 0px 25px 2px rgba(0, 0, 0, 0.05)";
+  }
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter-Variable.ttf") format("truetype");
+  font-weight: 100 400 500 700 800 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Set it globally for the whole app */
+body {
+  font-family: "Inter", sans-serif;
+}
+  .checkmarkInput {
+    position: relative;
+  }
+  .checkmarkInput::after {
+    content: '✓';
+    position: absolute;
+    right: -15%;
+    top: -15%;
+    /* transform: translateX(-50%); */
+    /* font-weight: bold; */
+    color: white;
+    /* background-color: white; */
+    font-size: 20px;
+    width: 100%;
+    height: 100%;
+  }
+
+  .checkmarkInput::after {
+    content: '✓';
+    position: absolute;
+    right: -15%;
+    top: -15%;
+     color: #F2F8FD;
+    font-size: 20px;
+    width: 100%;
+    height: 100%;
+}
